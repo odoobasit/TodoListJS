@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To do List</title>
+    <link href="./output.css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <body class="bg-purple-600">
+    <section class="flex flex-col gap-5 h-screen justify-center items-center">
+      <h2 class="text-white text-6xl uppercase">To do List</h2>
+      <!-- box -->
+      <div id="box" class="w-96 bg-purple-600 flex flex-col gap-5 p-4">
+        <!-- <div id="input-container" class="flex gap-2">
+          <input
+            type="text"
+            placeholder="Search to"
+            class="p-2 w-full rounded-lg"
+          />
+        </div> -->
+
+        <div id="show" class="flex flex-col gap-1 text-white rounded-lg"></div>
+
+        <!-- text -->
+        <div id="Add-Items">
+          <input
+            id="addition"
+            type="text"
+            placeholder="Add a new task"
+            class="p-2 w-full rounded-lg"
+          />
+        </div>
+        <button class="px-2 gap-5 rounded-lg text-purple bg-white h-9" id="btn">
+          SUBMIT
+        </button>
+        <button
+          class="px-2 gap-5 rounded-lg text-purple bg-white hidden h-9"
+          id="edit"
+        >
+          Edit
+        </button>
+      </div>
+    </section>
+
+    <script>
+      //selecting the submit button
+      let button = document.getElementById("btn");
+      // selecting the input field
+      let inp = document.getElementById("addition");
+      // selecting the main div jisme items jaenge
+      let show = document.getElementById("show");
+      // selecting the edit button
+      let editB = document.getElementById("edit");
+      let targetPara;
+      // submit button k uper function chalane k lye
+      button.addEventListener("click", Add);
+
+      function Add() {
+        let tasksElement = document.createElement("div");
+        tasksElement.classList.add(
+          "flex",
+          "justify-between",
+          "bg-purple-900",
+          "p-2",
+          "rounded-lg"
+        );
+        //create paragraph tag
+        let taskParagraph = document.createElement("p");
+        taskParagraph.textContent = inp.value;
+        taskParagraph.classList.add("taskParagraph");
+        //create cross button icon
+        let crossButton = document.createElement("button");
+        crossButton.classList.add("hidden");
+        crossButton.innerHTML = `<i class="fa-regular fa-circle-xmark"></i>`;
+        //create delete button icon
+        let deleteButton = document.createElement("button");
+        deleteButton.innerHTML = `<i class="fa-solid fa-trash"></i>`;
+        //create edit button icon
+        let editButton = document.createElement("button");
+        editButton.innerHTML = `<i class="fa-solid fa-pen-to-square"></i>`;
+        // button container k ander teeno icons ko append karaya he
+        let buttonContainer = document.createElement("div");
+        buttonContainer.classList.add("flex", "gap-2");
+
+        buttonContainer.appendChild(crossButton);
+        buttonContainer.appendChild(deleteButton);
+        buttonContainer.appendChild(editButton);
+        // taskelement ek div he jis k ander 2 siblings he taskParagraph and buttonContainer
+        tasksElement.appendChild(taskParagraph);
+        tasksElement.appendChild(buttonContainer);
+        // or show ek div he jisme taskelement ko dala he
+        show.appendChild(tasksElement);
+        inp.value = "";
+        //taskelement ko pass karaya he add function se deleteB me
+        deleteButton.addEventListener("click", () => deleteB(tasksElement));
+        editButton.addEventListener("click", edit);
+      }
+      function deleteB(tasksElement) {
+        tasksElement.remove();
+      }
+
+      function edit(e) {
+        // assigning svg parentelement->button
+        let targetParent = e.target.parentElement;
+        // svg parent element is button or not through tagname
+        //if (targetParent.tagName === "BUTTON") {
+        // parent element of button is div
+        let buttonCont = targetParent.parentElement;
+        // previous element of div tag is paragraph
+        targetPara = buttonCont.previousElementSibling;
+        let paraText = targetPara.textContent;
+        // console.log(paraText);
+        inp.value = paraText;
+        // } else {
+        //   alert("svg is coming as parent element please try again");
+        // }
+
+        //submit hide
+        button.classList.add("hidden");
+        //edit show
+        editB.classList.remove("hidden");
+
+        //yar svg ki jaga png image lelo ya to
+        //querySelectorAll iska kch pta hai?
+        //iska dekho phr btao whatsapp pr
+
+        // let newText = prompt("Enter new task text:", taskParagraph.textContent);
+        // if(newText !== "" ){
+        //     taskParagraph.textContent = newText;
+        // }
+      }
+
+      editB.addEventListener("click", function (e) {
+        let newValue = inp.value;
+        if (targetPara && newValue !== "") {
+          targetPara.textContent = newValue;
+          console.log(targetPara);
+          inp.value = "";
+          button.classList.remove("hidden");
+          //edit show
+          editB.classList.add("hidden");
+        } else {
+          alert("please click the edit button again");
+        }
+      });
+    </script>
+  </body>
+</html>
